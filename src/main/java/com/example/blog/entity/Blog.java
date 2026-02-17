@@ -3,6 +3,8 @@ package com.example.blog.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -25,5 +27,8 @@ public class Blog {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
+
 
 }
