@@ -8,7 +8,11 @@ import com.example.blog.repository.AuditLogRepository;
 import com.example.blog.repository.BlogRepository;
 import com.example.blog.repository.CategoryRepository;
 import com.example.blog.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -18,26 +22,25 @@ import java.util.List;
 @Service
 public class BlogService {
 
-    UserRepository userRepository;
-    AuditLogRepository auditLogRepository;
-    @Autowired
+    private final UserRepository userRepository;
     private final BlogRepository blogRepository;
-    @Autowired
+    private final AuditLogRepository auditLogRepository;
     private final CategoryRepository categoryRepository;
 
-
+    @Autowired
     public BlogService(UserRepository userRepository,
                        BlogRepository blogRepository,
-                       AuditLogRepository auditLogRepository, CategoryRepository categoryRepository) {
+                       AuditLogRepository auditLogRepository,
+                       CategoryRepository categoryRepository) {
 
         this.userRepository = userRepository;
         this.blogRepository = blogRepository;
-        this.auditLogRepository = auditLogRepository;  // ✅ IMPORTANT
+        this.auditLogRepository = auditLogRepository;
         this.categoryRepository = categoryRepository;
     }
 
-    public Blog create(Blog blog, Long categoryId)
-    {
+    // ✅ CREATE BLOG
+    public Blog create(Blog blog, Long categoryId) {
 
         String username = SecurityContextHolder
                 .getContext()
@@ -49,16 +52,13 @@ public class BlogService {
 
         blog.setAuthor(user);
 
-        // ✅ NEW: Set Category
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
         blog.setCategory(category);
 
-        // ✅ 1️⃣ Save Blog
         Blog savedBlog = blogRepository.save(blog);
 
-        // ✅ 2️⃣ Create Audit Log
         AuditLog auditLog = new AuditLog();
         auditLog.setAction("BLOG_CREATED");
         auditLog.setPerformedBy(username);
@@ -69,17 +69,32 @@ public class BlogService {
 
         return savedBlog;
     }
+
+    // ✅ GET BLOGS BY CATEGORY
     public List<Category> getBlogsByCategory(Long categoryId) {
         return categoryRepository.findByCategoryId(categoryId);
     }
 
+    // ✅ PAGINATION
+    public Page<Blog> getAllBlogs(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return blogRepository.findAll(pageable);
+    }
 
+    // ✅ SEARCH WITH PAGINATION (FIXED 🔥)
+    public Page<Blog> searchBlogs(String keyword, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return blogRepository.findByTitleContainingIgnoreCase(keyword, pageable);
+    }
 
+    // ✅ GET ALL (WITHOUT PAGINATION)
     public List<Blog> getAll() {
         return blogRepository.findAll();
     }
 
+    // ✅ DELETE BLOG
     public void delete(Long id) {
+
         Blog blog = blogRepository.findById(id).orElseThrow();
         blogRepository.delete(blog);
 
