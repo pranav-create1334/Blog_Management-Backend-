@@ -45,6 +45,12 @@ This project is a Blog Management Backend Application developed using Spring Boo
 9.Secure API Endpoints
 
 10.Exception Handling
+## Features Added
+- Blog pagination
+- Search with pagination
+- Comment module
+- Security configuration
+
 
 🎯 Objective
 
