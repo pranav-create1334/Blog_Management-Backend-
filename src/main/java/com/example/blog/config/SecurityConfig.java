@@ -1,6 +1,7 @@
 package com.example.blog.config;
 
 import org.springframework.context.annotation.*;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -57,7 +58,13 @@ public class SecurityConfig {
                         .requestMatchers("/blog/create").authenticated()
                         .requestMatchers("/error").permitAll()   // 🔥 ADD THIS
                         .requestMatchers("/blog/delete/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/blogs/*/react").hasRole("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/api/blogs/*/react").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/api/blogs/*/likes").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/blogs/*/dislikes").permitAll()
+
                         .anyRequest().authenticated()
+
                 )
 
                 // ✅ JWT filter

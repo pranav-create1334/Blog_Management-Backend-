@@ -34,5 +34,4 @@ public class Comment {
         createdAt = LocalDateTime.now();
     }
 
-    // getters and setters
 }
