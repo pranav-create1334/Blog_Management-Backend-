@@ -3,6 +3,7 @@ package com.example.blog.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,6 +30,9 @@ public class Blog {
     private Category category;
     @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BlogLike> likes = new ArrayList<>();
+
 
 
 }
