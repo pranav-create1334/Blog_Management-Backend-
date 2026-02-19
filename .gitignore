@@ -1,0 +1,12 @@
+# Maven target folder
+/target/
+
+# Compiled class files
+*.class
+
+# IntelliJ files
+.idea/
+*.iml
+
+# Logs
+*.log
