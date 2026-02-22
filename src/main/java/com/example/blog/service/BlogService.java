@@ -108,4 +108,8 @@ public class BlogService {
 
         auditLogRepository.save(log);
     }
+
+    public Blog getBlogById(long id) {
+        return blogRepository.getById(id);
+    }
 }

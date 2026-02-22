@@ -55,9 +55,9 @@ public class SecurityConfig {
                 // ✅ Authorization rules
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/blog/create").authenticated()
+                        .requestMatchers("/com/create").authenticated()
                         .requestMatchers("/error").permitAll()   // 🔥 ADD THIS
-                        .requestMatchers("/blog/delete/**").hasRole("ADMIN")
+                        .requestMatchers("/com/delete/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/blogs/*/react").hasRole("USER")
                         .requestMatchers(HttpMethod.DELETE, "/api/blogs/*/react").hasRole("USER")
                         .requestMatchers(HttpMethod.GET, "/api/blogs/*/likes").permitAll()

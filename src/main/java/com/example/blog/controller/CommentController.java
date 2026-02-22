@@ -22,7 +22,7 @@ public class CommentController {
         return commentService.addComment(blogId, content);
     }
 
-    @GetMapping("/blog/{blogId}")
+    @GetMapping("/com/{blogId}")
     public List<Comment> getComments(@PathVariable Long blogId) {
         return commentService.getCommentsByBlog(blogId);
     }

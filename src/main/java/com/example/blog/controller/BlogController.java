@@ -1,7 +1,6 @@
 package com.example.blog.controller;
 
 import com.example.blog.entity.Blog;
-import com.example.blog.entity.Category;
 import com.example.blog.service.BlogService;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/blog")
+@RequestMapping("/com")
 public class BlogController {
 
     private final BlogService blogService;
